@@ -45,6 +45,13 @@ Run command if the previous success:
 shadow destination_dir/ -exec mkdir subdirectory AND rmdir subdirectory
 ```
 
+Run command if `shadow` success or fail:
+
+```bash
+shadow destination_dir/ -exec mkdir subdirectory && rmdir destination_dir/subdirectory # If success
+shadow destination_dir/ -exec rmdir subdirectory || mkdir destination_dir/subdirectory # If fails
+```
+
 Inspect if a command ran, where it runs and what it runs:
 
 ```bash
