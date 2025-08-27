@@ -112,6 +112,7 @@ case "$1" in
 --dry)
   shift
   DEBUG=1
+  VERBOSE=1
   ;;
 --verbose)
   shift
