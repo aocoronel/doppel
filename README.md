@@ -97,12 +97,16 @@ parallel doppel --verbose {} -exec rm -rf .git ::: repository1 repository2 repos
 
 Example `parallel` with text files:
 
+Example repository_list.txt
+
+```txt
+repository1
+repository2
+repository3
+repository4
+```
+
 ```bash
-# repository_list.txt
-# repository1
-# repository2
-# repository3
-# repository4
 parallel doppel --verbose {} -exec rm -rf .git :::: repository_list.txt # Iterates over each folder
 ```
 
