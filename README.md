@@ -14,7 +14,7 @@ It allows a set command to run in multiple directories and cascade depending on 
 ## Installation
 
 ```bash
-git clone https://codeberg.org/aocoronel/doppel
+git clone https://github.com/aocoronel/doppel
 cd doppel
 mv src/doppel $HOME/.local/bin
 chmod +x "$HOME/.local/bin/doppel"
