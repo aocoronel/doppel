@@ -110,7 +110,7 @@ repository4
 parallel doppel --verbose {} -exec rm -rf .git :::: repository_list.txt # Iterates over each folder
 ```
 
-### Bultin async
+### Builtin async
 
 ```bash
 # -j JOBS
