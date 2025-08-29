@@ -1,8 +1,6 @@
-# Run command in another location
+# Run any command in another location concurrently
 
-`doppel` is a tool that allows you to run shell commands in a different location (directory).
-
-It allows a set command to run in multiple directories and cascade depending on command failure or success.
+`doppel` is a tool that allows you to run shell commands in a different location (directory). It allows a set command to run in multiple directories and cascade depending on command failure or success. It also supports running commands in async, using builtin features from Bash.
 
 ## Features
 

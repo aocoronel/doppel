@@ -1,0 +1,112 @@
+.TH doppel 1 "August 2025" "1.0.0" "User Commands"
+.SH NAME
+doppel \- Run any command in another location concurrently
+.SH SYNOPSIS
+.B doppel
+[OPTION] [DIR] -exec [COMMAND]
+.SH DESCRIPTION
+
+doppel is a tool that allows you to run shell commands in a different location (directory). It allows a set command to run in multiple directories and cascade depending on command failure or success. It also supports running commands in async, using builtin features from Bash.
+
+.SH OPTIONS
+.TP
+.B -exec [COMMAND]
+
+Specify command to be used. Commands should not be quoted.
+.TP
+.B -h, --help
+
+Display the help message and exits.
+.TP
+.B -j <JOBS>
+
+Run with async. If the -j option is not used, all operations will occur synchronously.
+
+.SH Syntax
+
+When specifying a command to be run, some extra syntax may be used for complex operations.
+
+There is two reserved keywords: AND, and NOT. When using them, two commands should be given, instead of one. They work just like the && and || operators. Because these operators are already part of the shell, when using them these calls refers to doppel, and not for the commands that doppel runs.
+
+When AND is used, if the previous command fails, the next will not run, however, if the previous works, the next command will run.
+
+When NOT is used, it has the same opposite effect to AND.
+
+.SH Examples
+
+.B Base usage doppel:
+
+> doppel destination_dir/ -exec mkdir subdirectory
+
+Creates subdirectory inside destination_dir.
+
+.B Run command in multiple directories:
+
+> doppel destination_dir1/ destination_dir2/ -exec mkdir subdirectory
+
+Creates subdirectory inside destination_dir1 and destination_dir2.
+
+.B Run command if the previous fails:
+
+> doppel destination_dir/ -exec rmdir subdirectory NOT mkdir subdirectory
+
+Removes subdirectory from destination_dir, if it works: Create subdirectory inside destination_dir.
+
+.B Run command if the previous success:
+
+> doppel destination_dir/ -exec mkdir subdirectory AND rmdir subdirectory
+
+Creates subdirectory inside destination_dir, if it works: Remove subdirectory from destination_dir.
+
+.B Run command if doppel success or fail:
+
+> doppel destination_dir/ -exec mkdir subdirectory && rmdir destination_dir/subdirectory # If success
+
+> doppel destination_dir/ -exec rmdir subdirectory || mkdir destination_dir/subdirectory # If fails
+
+.B Inspect if a command ran, where it runs and what it runs:
+
+> doppel --verbose destination_dir/ -exec mkdir subdirectory1 AND mkdir subdirectory2
+
+.B Run a demonstration:
+
+> doppel --dry destination_dir/ -exec mkdir subdirectory1 AND mkdir subdirectory2
+
+The actual commands are just echoed, and do not run
+
+.SH Parallel
+
+If you want to combine doppel capabilities with async, you can use it with the GNU Parallel (parallel(1)) for robust async capabilities, or use builtin bash async features.
+
+.TP
+Using GNU Parallel
+
+.B Example parallel use with doppel:
+
+> parallel doppel --verbose {} -exec rm -rf .git ::: repository1 repository2 repository3 repository4
+
+.B Example parallel with text files:
+
+Example
+.B repository_list.txt:
+
+repository1
+repository2
+repository3
+repository4
+
+> parallel doppel --verbose {} -exec rm -rf .git :::: repository_list.txt # Iterates over each folder
+
+.TP
+Builtin async
+
+> doppel -j 5 repository_list.txt -exec rm -rf .git
+
+.SH EXIT STATUS
+0 on success, non-zero on failure.
+
+.SH AUTHOR
+Augusto Coronel <aoc@getgoogleoff.me>
+
+.SH SEE ALSO
+parallel(1)

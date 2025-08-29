@@ -9,14 +9,24 @@ BLUE="$(tput setaf 87)"
 ORANGE="$(tput setaf 166)"
 RESET=$(tput sgr0)
 
+function _text() {
+  local color text reset
+  color=$1
+  text=$2
+  reset=$(tput sgr0)
+
+  echo -e "${color}${text}${reset}"
+}
+
 function help() {
   cat <<EOF
-$(_text "$BLUE" "Run command in another location")
+$(_text "$BLUE" "Run any command in another location concurrently")
 
 $(_text "$BLUE" "Usage:")
-  shadow FLAG <FLAG_INPUT> COMMANDS
+  shadow [OPTION] [DIR] -exec [COMMAND]
 
-$(_text "$BLUE" "Flags:")
+$(_text "$BLUE" "Options:")
+  -exec      Specify command to be used
   -h         Displays this message and exits
   -j <JOBS>  Run with async. Default is 0.
 EOF
